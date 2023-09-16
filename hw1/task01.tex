@@ -1,0 +1,22 @@
+
+\section*{№1 Эквивалентны ли следующие утверждения?}
+
+\begin{enumerate}
+	\item $f(n) = \Theta(g(n))$
+	\item $\exists c, 0 < c< +\infty: \lim _{n \to \infty}\frac{f(n)}{g(n)}  $
+\end{enumerate}
+\section*{Решение:}
+
+\begin{enumerate}
+\item Из утверждения №1 $\Rightarrow \exists c_1>0, c_2>0, N: \forall n>N \Rightarrow c_1g(n)<f(n)<c_2g(n) $
+
+\item Отсюда для отношения $\frac{f(n)}{g(n)}$ получим оценку:
+
+  $ c_1<\frac{f(n)}{g(n)}< c_2$
+
+\item По условию утверждения №1  $  c_1 , c_2 $ не обязанны быть равными, поэтому при переходе в пределе отношение $\frac{f(n)}{g(n)}$ не обязанно иметь 
+
+
+\item Например возьмем $g(n) = 1, f(n) = \lbrace 1, n\mod2=0  $
+
+\end{enumerate}
