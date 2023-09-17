@@ -1,0 +1,276 @@
+\section{Асимптотика}
+
+\subsection{Практика}
+
+Напомним определения:
+\begin{itemize}
+  \item $f(n) \in \O(g(n))     \equiv \exists N, c > 0 : \forall n \ge N : f(n) \le c \cdot g(n)$
+  \item $f(n) \in \Omega(g(n)) \equiv \exists N, c > 0 : \forall n \ge N : c \cdot g(n) \le f(n)$
+  \item $f(n) \in \Theta(g(n)) \equiv \exists N, c_1 > 0, c_2 > 0 : \forall n \ge N : c_1 \cdot g(n) \le f(n) \le c_2 \cdot g(n)$
+  \item $f(n) \in o(g(n))      \equiv \forall c > 0 : \exists N : \forall n \ge N : f(n) < c \cdot g(n)$
+  \item $f(n) \in \omega(g(n)) \equiv \forall c > 0 : \exists N : \forall n \ge N : c \cdot g(n) < f(n)$
+\end{itemize}
+Все функции здесь $\mathbb{N} \to \mathbb{N}$ или $\mathbb{N} \to \mathbb{R}_{>0}$ (далее будет
+ясно из контекста, какой класс функций используется). В дальнейшем, когда речь идет о принадлежности функций вышеопределенным множествам,
+мы будем использовать знак `$=$' вместо `$\in$', т.к. в литературе
+обычно используются именно такие обозначения.
+
+\begin{enumerate}
+  \item
+    Докажите, что:
+    \begin{enumerate}
+      \item $f(n) = \Omega(g(n)) \Leftrightarrow g(n) = \O(f(n))$
+      \item $f(n) = \omega(g(n)) \Leftrightarrow g(n) = o(f(n))$
+      \item $f(n) = \Theta(g(n)) \Leftrightarrow f(n) = \O(g(n)) \wedge f(n) = \Omega(g(n))$
+    \end{enumerate}
+
+  \item
+    {\bf Контекст имеет значение} \\
+    Правда ли, что $f(n) = \O(f(n)^2)$?
+
+  \item
+	{\bf Несколько аргументов}\\
+	Придумайте определение для $f(n, m) = \O(g(n, m))$.
+	
+  \item
+    {\bf Асимметрия}
+    \begin{enumerate}
+      \item Правда ли, что $\min(f(n), g(n)) = \Theta(f(n) + g(n))$?
+      \item Правда ли, что $\max(f(n), g(n)) = \Theta(f(n) + g(n))$?
+    \end{enumerate}
+
+  \item
+    {\bf Классы} \\
+    Определим отношение ``$\sim$''. Будем говорить, что $f \sim g$, если $f = \Theta(g)$. Покажите, что
+    `$\sim$' -- отношение эквивалентности, т.е. оно
+    \begin{itemize}
+    \item Рефлексивное: $\forall f : f \sim f$,
+    \item Симметричное: $\forall f, g: f \sim g \Leftrightarrow g \sim
+      f$,
+    \item Транзитивное: $\forall f, g, h: (f \sim g) \wedge (g \sim h)
+      \Rightarrow f \sim h$.
+    \end{itemize}
+
+  \item
+    {\bf Порядки} \\
+    Определим отношение `$\preceq$'. Будем говорить, что $f \preceq g$, если $f = \O(g)$.
+    
+    % Определим отношение $f \preceq g \equiv f = \O(g)$.
+    \begin{enumerate}
+      \item Правда ли, что $\preceq$ -- отношение предпорядка (рефлексивное и транзитивное)?
+      \item Правда ли, что $\preceq$ -- отношение частичного порядка
+        (+ антисимметричность)?
+      \item Правда ли, что $\preceq$ -- отношение частичного порядка
+        на классах эквивалентности по $\sim$?
+    \end{enumerate}
+
+  \item Правда ли, что если $y(n)$ -- монотонная
+    неограниченная функция, и $f(n) = \O(g(n))$, то
+    $f(\,y(n)\,) = \O(g(\,y(n)\,))$?
+    
+  \item
+    Правда ли, что если $f_1(n) = \O(f_2(n))$ и $g_1(n) = \O(g_2(n))$, то $f_1 + g_1 = \O(f_2 + g_2)$?
+    
+  \item
+  	{\bf Рекурренты}
+  	\begin{enumerate}
+  		\item Решите рекурренту $T(n) = T(n/3) + \log_2 n$
+  		\item Докажите, что если $T(n) = \log n \cdot T\!\left(\frac{n}{\log n}\right) + n$, то $T(n) = \O(n \log n)$
+  	\end{enumerate}
+    
+%  \item
+%    \begin{enumerate}
+%    	\item Требуется реализовать очередь с амортизированным временем работы всех операций $\O(1)$, используя $\O(1)$ стеков.
+%    	\item Придумайте стек, в котором можно узнавать минимум за $\O(1)$. Все остальные операции стека также должны работать за $\O(1)$).
+%    	\item Придумайте очередь, в которой можно узнавать минимум за
+%    	амортизированное $\O(1)$. Все остальные операции очереди также
+%    	должны работать за амортизированное $\O(1)$.
+%    	\item
+%    	Придумайте расширяющийся массив с реальным (не амортизированным) временем добавления $\O(1)$.
+%    \end{enumerate}
+
+  \item
+  Считайте, что функции здесь $\mathbb{N} \to \mathbb{N}$ и что $\forall n : f(n) > 1 \land g(n) > 1$.
+    \begin{enumerate}
+      \item $f(n) = \Omega(f(n \slash 2)$)?
+      \item $f(n) = \O(g(n)) \Rightarrow \log f(n) = \O(\log g(n))$?
+      \item $f(n) = \O(g(n)) \Rightarrow 2^{f(n)} = \O(2^{g(n)})$?
+      \item $f(n) = o(g(n)) \Rightarrow \log f(n) = o(\log g(n))$?
+      \item $f(n) = o(g(n)) \Rightarrow 2^{f(n)} = o(2^{g(n)})$?
+      \item $\sum\limits_{k = 1}^n \frac{1}{k} = \Omega(\log n)$?
+    \end{enumerate}
+
+  \item
+    Оцените время работы следующих программ:
+    \begin{enumerate}
+      \item
+\begin{lstlisting}
+for (a = 1; a < n; a++)
+  for (b = 0; b < n; b += 1)
+    ...
+\end{lstlisting}
+
+      \item
+\begin{lstlisting}
+for (a = 1; a < n; a++)
+  for (b = 0; b < n; b += a)
+    ...
+\end{lstlisting}
+
+      \item Найти такие $a, b, c \in \N: a b c = n, a+b+c = \min$. Решение:
+\begin{lstlisting}
+for (a = 1; a <= n; ++a)
+  for (b = 1; a * b <= n; ++b)
+    c = n / a / b, ... ;
+\end{lstlisting}
+
+      \item Еще одно решение \texttt{(c)}:
+\begin{lstlisting}
+for (a = 1; a * a * a <= n; ++a)
+  for (b = 1; b * b <= n; ++b)
+    c = n / a / b, ... ;
+\end{lstlisting}
+
+      \item И еще одно решение \texttt{(c)}:
+\begin{lstlisting}
+for (a = 1; a * a * a <= n; ++a)
+  for (b = a; a * b * b <= n; ++b)
+    c = n / a / b, ... ;
+\end{lstlisting}
+
+      \item Дополнительный вопрос: что делает этот код?
+\begin{lstlisting}
+a = 1, b = n;
+while (a < b) {
+  while (x[a] < M && a <= b) a++;
+  while (x[b] > M && a <= b) b--;
+  if (a <= b) swap(x[a++], x[b--]);
+}
+\end{lstlisting}
+
+      \item Дополнительный вопрос: а если бы вместо 2 было бы 1?
+\begin{lstlisting}
+while (a >= 2)
+  a = sqrt(a);
+\end{lstlisting}
+
+      \item Решето Эратосфена (пользуемся, что: $p_n \approx n \ln n$)
+	\begin{lstlisting}
+for (p = 2; p < n; p++)
+  if (min_divisor[p] == 0) // is prime
+    for (x = p + p; x < n; x += p)
+      if (min_divisor[x] == 0)
+        min_divisor[x] = p;
+	\end{lstlisting}
+	    \end{enumerate}
+
+  \subsection*{Дополнительные задачи}
+
+  \item
+  Дан массив целых чисел от $1$ до $n$ длины $n + 1$, который нельзя модифицировать. Используя $\O(\log{n})$ битов
+  дополнительной памяти, найдите в массиве пару одинаковых чисел за $\O(n)$.
+
+  \item Дана последовательность $\sigma = \langle a_1, a_2, \cdots, a_m\rangle$,
+  где каждый $a_i \in [n] = \{1,2,\cdots,n\}$. Обозначим частоту
+  появления элемента $x$ через $f_{\sigma}[x] = \left|\{i \mid a_i =
+  x\}\right|$. Известно, что $\exists x: f_\sigma[x] = 1$ и для всех
+  остальных значений $y \ne x, f_\sigma[y] \equiv 0 \mod
+  2$. Требуется найти $x$ за один проход по последовательности,
+  используя $\O(\log{n} + \log{m})$ бит памяти.
+
+  \item Дана последовательность $\sigma = \langle a_1, a_2, \cdots, a_m \rangle$,
+  где каждый $a_i \in [n]$. Требуется проверить, правда ли, что
+  $\exists x: f_\sigma[x] > \frac{m}{2}$, и если такой $x$ есть, то
+  найти его за один проход по последовательности.
+  Докажите, что любое решение потребует $\Omega(m \cdot (\log{n} -
+  \log{m} + 1))$ бит памяти.
+
+  \item Разрешим сделать два прохода по последовательности. Решите
+  прошлую задачу за $\O(\log{n} + \log{m})$ бит памяти.
+\end{enumerate}
+
+\pagebreak
+\subsection{Домашнее задание}
+\begin{enumerate}
+  \item	
+	Эквивалентны ли следующие факты?
+	\begin{itemize}
+		\item $f = \Theta(g)$
+		\item $\exists c,  0 < c < +\infty : \lim\limits_{n \to +\infty} \frac{f(n)}{g(n)} = c$
+	\end{itemize}
+
+  \item
+    Дайте ответ для двух случаев $\mathbb{N} \to \mathbb{N}$ и $\mathbb{N} \to \mathbb{R}_{>0}$:
+    \begin{enumerate}
+      \item
+        Если в определении $\O$ опустить условие про $N$ (т.е. оставить
+        просто $\forall n$), будет ли полученное определение эквивалентно
+        исходному?
+      \item
+        Тот же вопрос про $o$.
+    \end{enumerate}
+
+  \item
+    Продолжим отношение `$\preceq$' на функциях до отношения на классах эквивалентности по отношению эквивалентности `$\sim$', введённому на практике. Правда ли, что получится отношение \textit{линейного порядка} (то есть $\forall f, g: (f \preceq g) \lor (g \preceq f)$)?
+
+  \item
+    Докажите, или приведите контрпример:
+    \begin{enumerate}
+      \item $g(n) = o(f(n)) \Rightarrow f(n) + g(n) = \Theta(f(n))$
+      \item $f(n) = \O(g(n)) \Leftrightarrow f(n) = o(g(n)) \lor f(n) = \Theta(g(n))$
+    \end{enumerate}
+
+	\item
+Решите рекурренту $T(n) = 3 T(\sqrt{n}) + \log_2 n$ (найдите точную оценку асимптотики и докажите). Здесь можно считать, что $T(n \le 1) = 1$.
+
+  \item Заполните табличку и поясните (особенно строчки 4 и 7):
+    $$
+    \begin{array}{|cc|c|c|c|c|c|}
+      \hline
+      A & B & \O & o & \Theta & \omega & \Omega \\
+      \hline
+      n & n^2 & + & + & - & - & - \\
+      \log^k n & n^{\epsilon} & & & & & \\
+      n^k & c^n & & & & & \\
+      \sqrt{n} & n^{\sin n} & & & & & \\
+      2^n & 2^{n \slash 2} & & & & & \\
+      n^{\log m} & m^{\log n} & & & & & \\
+      \log (n!) & \log(n^n) & & & & & \\
+      \hline
+    \end{array}
+    $$
+    Здесь все буквы, кроме $n$, -- положительные константы.
+
+\subsection*{Дополнительные задачи}
+    
+    \item  
+    Считайте здесь, что функции здесь $\mathbb{N} \to \mathbb{N}$ и что $\forall n : f(n) > 1 \land g(n) > 1$.
+    \begin{enumerate}
+%      \item $f(n) = \Omega(f(n \slash 2)$)?
+      \item $f(n) = \O(g(n)) \Rightarrow \log f(n) = \O(\log g(n))$?
+      \item $f(n) = \O(g(n)) \Rightarrow 2^{f(n)} = \O(2^{g(n)})$?
+%      \item $f(n) = o(g(n)) \Rightarrow \log f(n) = o(\log g(n))$?
+%      \item $f(n) = o(g(n)) \Rightarrow 2^{f(n)} = o(2^{g(n)})$?
+    \end{enumerate}
+
+	\item
+	Упорядочьте функции по скорости роста и обозначьте неравенства между соседями. 
+	Укажите, в каких неравенствах $f = o(g)$, а в каких $f = \Theta(g)$
+	$$
+	\begin{array}{cccccc}
+	\log(\log^* n) & 2^{log^* n} & (\sqrt{n})^{\log n} & n^2 & n! & (\log n)! \\
+	(3 \slash 2)^n & n^3 & \log^2 n & \log n! & 2^{2^n} & n^{1 \slash \log n} \\
+	\ln \ln n & \log^* n & n \cdot 2^n & n^{\log \log n} & \ln n & 1 \\
+	2^{\ln n} & (\log n)^{\log n} & e^n & 4^{\log n} & (n + 1)! & \sqrt{\log n} \\
+	\log^* \log n & 2^{\sqrt{2 \log n}} & n & 2^n & n \log n & 2^{2^{n + 1}}					
+	\end{array}
+	$$
+	Примечание: $\log^*(n) = \left\{
+	\begin{array}{ll}
+	0 & \texttt{ если } n \leq 1;\\
+	1 + \log^*(\log n) & \texttt{ иначе.}
+	\end{array}
+	\right.$
+\end{enumerate}
+
+\clearpage

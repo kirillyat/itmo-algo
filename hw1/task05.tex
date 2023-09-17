@@ -1,17 +1,5 @@
 
-\section*{№5 Заполните табличку и поясните}
-$$
-    \begin{array}{|cc|c|c|c|c|c|}
-      \hline
-      A & B & \O & o & \Theta & \omega & \Omega \\
-      \hline
-      n & n^2 & + & + & - & - & - \\
-      \log^k n & n^{\epsilon} & & & & & \\
-      n^k & c^n & & & & & \\
-      \sqrt{n} & n^{\sin n} & & & & & \\
-      2^n & 2^{n \slash 2} & & & & & \\
-      n^{\log m} & m^{\log n} & & & & & \\
-      \log (n!) & \log(n^n) & & & & & \\
-      \hline
-    \end{array}
-    $$
+\section*{№5 Решите рекурренту (найдите точную оценку асимптотики и докажите)}
+
+$T(n) = 3 T(\sqrt{n}) + \log_2 n$ Здесь можно считать, что $T(n \le 1) = 1$.
+
