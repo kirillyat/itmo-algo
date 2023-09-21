@@ -1,3 +1,6 @@
+from typing import Tuple
+
+
 class SingleManager:
     def __init__(
         self,
@@ -10,11 +13,11 @@ class SingleManager:
 
     def close(self, i: int):
         if self.stack:
-            self.stack.pop(-1)
+            self.stack.pop(-1) + 1
         else:
             self.min = i
 
-    def min(self):
+    def low(self) -> int:
         if self.stack:
             return self.stack[-1]
         return self.min
@@ -29,22 +32,30 @@ class SingleManager:
 class TripleManager:
     def __init__(self) -> None:
         self.ans = 0
+        self.n = 1
         self.managers = []
 
-    def process(self, s: str) -> int:
+    def process(self, s: str) -> Tuple[int, int]:
         self.ans = 0
+        self.n = 1
+
         self.managers = [SingleManager(), SingleManager(), SingleManager()]
 
         for i, c in enumerate(s):
-            if i in "()":
+            if c in "()":
                 self.managers[0].process(i, c)
-            if i in "{}":
+            if c in "{}":
                 self.managers[1].process(i, c)
-            if i in "[]":
+            if c in "[]":
                 self.managers[2].process(i, c)
 
-            self.ans = max(self.ans, max([m.min() for m in self.managers]))
-        return self.ans
+            cur = min([i - m.low() for m in self.managers])
+            if cur > 0 and cur == self.ans:
+                self.n += 1
+            if cur > self.ans:
+                self.ans = cur
+                self.n = 1
+        return self.ans, self.n
 
 
 print(TripleManager().process(input()))
