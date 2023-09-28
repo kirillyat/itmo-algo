@@ -29,6 +29,27 @@ class TripleManager:
         self.ans = 0
         self.n = 1
         self.managers = []
+    
+    def process1(self, s: str) -> Tuple[int, int]:
+        self.ans = 0
+        self.n = 1
+
+        self.manager = SingleManager()
+
+        for i, c in enumerate(s):
+            if c == ')':
+                self.manager.close(i+1)
+            elif c == '(':
+                self.manager.open(i+1)
+          
+
+            cur = i+1 - self.manager.low()
+            if cur > 0 and cur == self.ans:
+                self.n += 1
+            if cur > self.ans:
+                self.ans = cur
+                self.n = 1
+        return self.ans, self.n
 
     def process(self, s: str) -> Tuple[int, int]:
         self.ans = 0
@@ -59,4 +80,4 @@ class TripleManager:
         return self.ans, self.n
 
 
-print(*TripleManager().process(input()))
+print(*TripleManager().process1(input()))
