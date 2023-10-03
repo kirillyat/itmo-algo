@@ -1,0 +1,83 @@
+
+\section*{Задание 4}
+
+
+\begin{lstlisting}
+	class SingleManager:
+    def __init__(
+        self,
+    ) -> None:
+        self.stack = []
+        self.min = 0
+
+    def open(self, i: int):
+        self.stack.append(i)
+
+    def close(self, i: int):
+        if self.stack:
+            self.stack.pop(-1)+1
+        else:
+            self.min = i
+
+    def low(self) -> int:
+        if self.stack:
+            return self.stack[-1]
+        return self.min
+
+
+
+class TripleManager:
+    def __init__(self) -> None:
+        self.ans = 0
+        self.n = 1
+        self.managers = []
+
+    def process(self, s: str) -> Tuple[int, int]:
+        self.ans = 0
+        self.n = 1
+
+        self.managers = [SingleManager(), SingleManager(), SingleManager()]
+
+        for i, c in enumerate(s):
+            if c == ')':
+                self.managers[0].close(i+1)
+            elif c == '(':
+                self.managers[0].open(i+1)
+            elif c == '}':
+                self.managers[1].close(i+1)
+            elif c == '{':
+                self.managers[1].open(i+1)
+            elif c == ']':
+                self.managers[2].close(i+1)
+            elif c == '[':
+                self.managers[2].open(i+1)
+
+            cur = min([i+1 - m.low() for m in self.managers])
+            if cur > 0 and cur == self.ans:
+                self.n += 1
+            if cur > self.ans:
+                self.ans = cur
+                self.n = 1
+        return self.ans, self.n
+\end{lstlisting}
+
+\begin{enumerate}
+	\item Данная программа решает задачу по поиску самой длинной подстроки строки, которая является правильной скобочной последовательностью. Время работы программы составляет O(n).
+
+	\item Программа состоит из двух классов: SingleManager и TripleManager.
+	
+	\item Класс SingleManager представляет собой менеджер для работы со скобками одного типа. У него есть следующие методы:
+	
+	\item - init(): конструктор класса, инициализирует пустой стек и минимальное значение индекса.
+	\item - open(i: int): добавляет индекс открывающей скобки в стек.
+	\item - close(i: int): если стек не пустой, удаляет последний индекс из стека; в противном случае обновляет минимальное значение индекса.
+	\item - low(): возвращает верхний элемент стека (индекс последней открывающей скобки) или минимальное значение индекса.
+	
+	\item Класс TripleManager представляет собой менеджер для работы со скобками трех типов. У него есть следующие методы:
+	
+	\item - init(): конструктор класса, инициализирует переменные ans, n и список managers.
+	\item - process(s: str) -> Tuple(int, int): метод, который обрабатывает строку s, содержащую все три типа скобок. Он инициализирует переменные ans и n нулями, создает экземпляры класса SingleManager для каждого типа скобок и помещает их в список managers. Затем перебирает все символы строки и для каждого символа вызывает соответствующий метод open() или close() соответствующего экземпляра SingleManager. Затем вычисляется текущая длина правильной скобочной последовательности и обновляются значения переменных ans и n, если текущая длина больше текущего значения ans. В конце метод возвращает значения ans и n.
+	
+	\item В основной программе создается экземпляр класса TripleManager и вызывается его метод process, передавая ему строку, для которой нужно найти самую длинную правильную скобочную последовательность. Возвращаемые значения метода process - это длина найденной подстроки и количество таких подстрок в строке.
+
+\end{enumerate}
