@@ -1,14 +1,52 @@
+\begin{lstlisting}
+
+	from typing import List, Tuple
+
+
+	class AdvansedList:
+		"""
+		Вам дан массив из n элементов и список из m запросов
+		add(x, l, r): прибавить x к каждому элементу на отрезке [l, r].
+		За O(n + m) выведите массив,
+		получающийся из исходного после выполнения заданных запросов
+		"""
+	
+		def __init__(self, data: List[int]) -> None:
+			self.data: List[int] = data
+			self.modifications: List[int] = [0 for i in data]
+	
+		def add(self, x: int, l: int, r: int):
+			self.modifications[l] += x
+			if r < len(self.data):
+				self.modifications[r] -= x
+	
+		def sync(self):
+			acc = 0
+			for i, x in enumerate(self.modifications):
+				acc += x
+				self.data[i] += acc
+			self.modifications = [0 for i in self.data]
+	
+		def apply_adds(self, qeries: List[Tuple[int, int, int]]):
+			for args in qeries:
+				self.add(*args)
+			self.sync()
+			return self.data
+\end{lstlisting}
+
 \begin{enumerate}
-	\item
-	
-	\begin{enumerate}
-		\item
-		
-		\item
-	\end{enumerate}
-   	   	
-   	\item
-   	
-   	\item
-	
+
+\item Данное решение представляет собой класс AdvansedList, 
+который содержит в себе массив данных data, список модификаций modifications и несколько методов.
+
+\item Метод $\_\_init\_\_$ инициализирует класс, принимая входные данные в виде списка чисел data и создает список модификаций modifications, состоящий из нулей, размером равным длине data.
+
+\item Метод add принимает три аргумента: число x, номер начального элемента l и номер конечного элемента r. Он прибавляет x к каждому элементу на отрезке [l, r] массива data. Операция выполняется следующим образом: прибавляем x к элементу с индексом l и вычитаем x из элемента с индексом r. Если r выходит за границы массива data, то x просто прибавляется к элементу с индексом l.
+
+\item Метод sync синхронизирует массив data со списком модификаций modifications. Для этого проходим по каждому элементу x и индексу i в списке модификаций и применяем следующий алгоритм: прибавляем x к текущему элементу data[i] и сохраняем сумму в переменной acc. Затем присваиваем data[i] значение acc, а затем обнуляем modifications.
+
+\item Метод $apply\_adds$ применяет список запросов qeries к массиву data. Для каждого запроса вызывается метод add, а затем вызывается метод sync, чтобы синхронизировать массив data с актуальными модификациями. Наконец, метод возвращает массив data после выполнения всех запросов.
+
+\item Таким образом, чтобы получить массив, получающийся из исходного после выполнения заданных запросов, достаточно создать объект класса AdvansedList с исходным массивом, вызвать метод apply_adds с соответствующими запросами и получить результат.
+
 \end{enumerate}
