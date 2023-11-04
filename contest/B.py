@@ -1,14 +1,22 @@
 from typing import List
-from collections import Counter
 
 def countinvers(arr: List[int]):
-    cnts = Counter(arr)
-    return [n for n in range(201) for _ in range(cnts[n])]
+    count = 0
+    k = 0
+    for i in range(1, len(arr)):
+        if arr[i - 1] > arr[i]:
+            if count == 0:
+                count = 1
+            k+=1
+            count *= k
+    
+    return count
 
 
 def main():
     n = int(input())
-    arr = map(int, input().split())
+    arr = list(map(int, input().split()))
     print(countinvers(arr))
+
 
 main()
