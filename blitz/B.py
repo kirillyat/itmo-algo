@@ -1,32 +1,31 @@
-def max_palindrome_length(s):
-    n = len(s)
-    dp = [[0] * n for _ in range(n)]
 
-    for i in range(n):
-        dp[i][i] = 1
+def longest_palindrome(s):
+    max_length = 1
+    start = 0
 
-    max_length = 1  # Начальное значение максимальной длины палиндрома
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            substr = s[i:j+1]
 
-    for length in range(2, n + 1):
-        for i in range(n - length + 1):
-            j = i + length - 1
-
-            if s[i] == s[j]:
-                if length == 2:
-                    dp[i][j] = 2
-                else:
-                    dp[i][j] = dp[i + 1][j - 1] + 2
-            else:
-                dp[i][j] = max(dp[i][j - 1], dp[i + 1][j])
-
-            max_length = max(max_length, dp[i][j])
-
+            if len(substr) > max_length and is_almost_palindrome(substr):
+                start = i
+                max_length = len(substr)
+  
     return max_length
 
-# Чтение входных данных
-n = int(input())
-s = input()
+def is_almost_palindrome(s):
+    mismatches = 0
+    left, right = 0, len(s) - 1
 
-# Вычисление максимальной длины подстроки-палиндрома
-result = max_palindrome_length(s)
-print(result)
+    while left < right:
+        if s[left] != s[right]:
+            mismatches += 1
+        if mismatches > 1:
+            return False
+        left, right = left + 1, right - 1
+
+    return True
+input()
+
+
+print(longest_palindrome(input()))
