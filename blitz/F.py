@@ -46,27 +46,22 @@ def main():
                 v = f(v,a)
             print(v)
 
-def test_main():
-   # Test case 1
-   input_values = ['3', '1 10', '2 5', '3']
-   expected_output = '10'
-   assert main(input_values) == expected_output
-
-   # Test case 2
-   input_values = ['4', '2 3', '1 2', '2 1', '3']
-   expected_output = '1'
-   assert main(input_values) == expected_output
-
-   # Test case 3
-   input_values = ['3', '1 10', '1 20', '3']
-   expected_output = '20'
-   assert main(input_values) == expected_output
-
-   # Test case 4
-   input_values = ['3', '2 3', '2 1', '3']
-   expected_output = '1'
-   assert main(input_values) == expected_output
-
-main()
+def main_():
+   s = []
+   for _ in range(int(input())):
+        cmd, v = list(map(int, input().split()))
+        if cmd == 1: #max
+            while s and s[-1][0] < v:
+                s.pop()
+            if not s or s[-1][0] < v:
+                s.append((v, ))
+        elif cmd == 2: #min
+            while s and s[-1][0] > v:
+                s.pop()
+            if not s or s[-1][0] > v:
+                s.append((v, ))
+        elif cmd == 3:
+             print(max(s)[0] if s else 0)
+main_()
 
 
