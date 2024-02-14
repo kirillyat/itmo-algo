@@ -1,37 +1,42 @@
-def dfs(v):
-    color[v] = 1  # Серый цвет вершины
-    for u in graph[v]:
-        if color[u] == 0:  # У вершины белый цвет
-            parent[u] = v  # Указываем родителя
-            if dfs(u):
-                return True
-        elif color[u] == 1:  # У вершины серый цвет
-            # Нашли цикл
-            cycle.append(u)
-            tmp = v
-            while tmp != u:  # Восстанавливаем цикл
-                cycle.append(tmp)
-                tmp = parent[tmp]
-            cycle.reverse() # Переворачиваем для правильного порядка
+def has_cycle(graph):
+    visited = set()
+    stack = set()
+    path = []
+
+    def dfs(node):
+        if node in stack:
+            index = path.index(node)
+            print("YES")
+            print(" ".join(map(str, path[index+1:] + [node])))
             return True
-    color[v] = 2  # Черный цвет вершины
+        if node in visited:
+            return False
+
+        visited.add(node)
+        stack.add(node)
+        path.append(node)
+
+        for neighbor in graph.get(node, []):
+            if dfs(neighbor):
+                return True
+
+        stack.remove(node)
+        path.pop()
+        return False
+
+    for node in graph:
+        if dfs(node):
+            return True
+
     return False
 
-n, m = map(int, input().split())
-graph = {i: [] for i in range(n)}
-color = [0] * n  # 0 - белый, 1 - серый, 2 - черный
-parent = [-1] * n
-cycle = []
+import collections
+graph = collections.defaultdict(list)
 
+n, m = list(map(int, input().split()))
 for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a-1].append(b-1)  # Нумерация с 0
+    a, b = list(map(int, input().split()))
+    graph[a].append(b)
 
-for i in range(n):
-    if color[i] == 0:  # Если вершина не посещена
-        if dfs(i):
-            print("YES")
-            print(' '.join(map(str, [x + 1 for x in cycle])))  # Нумерация с 1
-            break
-else:  # Если цикл не найден
-    print("NO")
+if not has_cycle(graph):
+    print('NO')
