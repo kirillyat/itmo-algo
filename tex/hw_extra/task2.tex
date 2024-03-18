@@ -1,0 +1,55 @@
+\section*{Поиск второго максимума в массиве}
+
+
+\section*{Условие задания}
+
+Необходимо найти второй максимум в массиве за $n + O(\log n)$ сравнений.
+
+\section*{Код на Python}
+
+\begin{lstlisting}[language=Python]
+def secondmax(arr):
+    n = len(arr)
+    if n == 0:
+        return None, None
+    if n == 1:
+        return arr[0], None
+
+    def compare_pairs(left, right):
+        if left[0] > right[0]:
+            return left, right
+        else:
+            return right, left
+
+    history = [(arr[i], []) for i in range(n)]
+
+    while len(history) > 1:
+        next_level = []
+        for i in range(0, len(history), 2):
+            if i + 1 < len(history):
+                winner, loser = compare_pairs(history[i], history[i + 1])
+                winner[1].append(loser[0])
+                next_level.append(winner)
+            else:
+                next_level.append(history[i])
+        history = next_level
+
+    max_element = history[0][0]
+    fights = history[0][1]
+
+    if not fights:
+        return max_element, None
+
+    second_max = fights[0]
+    for f in fights[1:]:
+        if f > second_max:
+            second_max = f
+
+    return max_element, second_max
+\end{lstlisting}
+
+\section*{Обяснение решения}
+
+Данный алгоритм использует метод турнирного дерева для определения второго максимума в массиве. На каждом шаге элементы массива сопоставляются парами, выигравшие элементы переходят на следующий уровень, а проигравшие сохраняются в истории победителя. Процесс продолжается до тех пор, пока не останется один максимальный элемент, история которого содержит всех его "соперников". Затем находится максимальный элемент из этой истории, который будет вторым максимумом массива. Это позволяет найти второй максимум за $n + O(\log n)$ сравнений, так как каждый элемент, кроме одного, проигрывает ровно один раз, а дополнительные $\log n$ сравнения необходимы для определения второго максимума среди проигравших.
+
+
