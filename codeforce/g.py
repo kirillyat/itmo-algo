@@ -1,40 +1,61 @@
-import heapq
+from collections import defaultdict
+INF = 2e9+5
 
-def dijkstra(graph, start):
-    n = len(graph)
-    dist = [float('inf')]*n
-    dist[start] = 0
-    pq = [(0, start)]
-    while pq:
-        d, u = heapq.heappop(pq)
-        if d > dist[u]:
-            continue
-        for v, w in graph[u]:
-            if dist[v] > d + w:
-                dist[v] = d + w
-                heapq.heappush(pq, (dist[v], v))
-    return dist
+def roadblock(N, M, a, b, c):
+    D = [INF] * N
+    P = [(-1, -1)] * N
+    for i in range(M):
+        a[i] -= 1
+        b[i] -= 1
+    D[0] = 0
 
-n, m = map(int, input().split())
-graph = [[] for _ in range(n)]
-edges = []
+    for i in range(N):  # Bellman-Ford
+        for j in range(M):
+            newD = D[a[j]] + c[j]
+            if newD < D[b[j]]:
+                D[b[j]] = newD
+                P[b[j]] = (a[j], j)
+            newD2 = D[b[j]] + c[j]
+            if newD2 < D[a[j]]:
+                D[a[j]] = newD2
+                P[a[j]] = (b[j], j)
+                
+    bst = D[N-1]
+    ind = []
+    i = N-1
+    while P[i][1] != -1:
+        ind.append(P[i][1])
+        i = P[i][0]
 
-for _ in range(m):
-    u, v, w = map(int, input().split())
-    graph[u-1].append((v-1, w))
-    graph[v-1].append((u-1, w))
-    edges.append((u-1, v-1, w))
+    delta = 0
+    for i in ind:
+        c[i] *= 2  # Double the weight
+        D = [INF] * N
+        D[0] = 0
+        for j in range(N):
+            for k in range(M):
+                newD = D[a[k]] + c[k]
+                if newD < D[b[k]]:
+                    D[b[k]] = newD
+                newD2 = D[b[k]] + c[k]
+                if newD2 < D[a[k]]:
+                    D[a[k]] = newD2
 
-dist_from_start = dijkstra(graph, 0)
-dist_from_end = dijkstra(graph, n-1)
-min_path = dist_from_start[n-1]
+        delta = max(delta, D[N-1] - bst)
+        c[i] //= 2  # Restore the weight
+        
+    return delta
 
-max_increase = 0
-for u, v, w in edges:
-    # Путь при удвоении длины этой дороги
-    increase = (dist_from_start[u] + w*2 + dist_from_end[v]) - min_path
-    max_increase = max(max_increase, increase)
-    increase = (dist_from_start[v] + w*2 + dist_from_end[u]) - min_path
-    max_increase = max(max_increase, increase)
+def main():
+    N, M = map(int, input().split())
+    a, b, c = [], [], []
+    for _ in range(M):
+        ai, bi, ci = map(int, input().split())
+        a.append(ai)
+        b.append(bi)
+        c.append(ci)
 
-print(max_increase)
+    print(roadblock(N, M, a, b, c))
+
+if __name__ == "__main__":
+    main()

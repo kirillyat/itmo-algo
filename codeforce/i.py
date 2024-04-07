@@ -1,48 +1,40 @@
-import heapq
 
-def can_deliver(max_weight, n, roads, time_limit=1440): # 1440 минут в сутках
-    # Создаём адъяксентный список для графа
-    adj = [[] for _ in range(n)]
-    for a, b, t, w in roads:
-        if w >= max_weight:  # Дорога может выдержать вес
-            adj[a-1].append((b-1, t))
-            adj[b-1].append((a-1, t))
-    
-    # Алгоритм Дейкстры с модификацией
-    distance = [float('inf')] * n
-    distance[0] = 0  # начинаем с города 1
+from heapq import heappop, heappush
+from sys import stdin, stdout
 
-    queue = [(0, 0)] # (время, город)
+def dijkstra(weights, time_limits, n):
+    max_possible_cups = 30000  # С учетом максимально возможного веса 3 тонны и веса одной кружки
+    queue = [(0, 0, 0)]  # Время, текущий город, количество кружек
+    visited = [[False] * (max_possible_cups + 1) for _ in range(n + 1)]
+
     while queue:
-        current_time, u = heapq.heappop(queue)
-        
-        if current_time > distance[u]:
+        time, city, cups = heappop(queue)
+        if city == n - 1:
+            return cups
+        if visited[city][cups]:
             continue
-        
-        for v, time in adj[u]:
-            if current_time + time < distance[v]:
-                distance[v] = current_time + time
-                heapq.heappush(queue, (distance[v], v))
+        visited[city][cups] = True
 
-    # Проверяем, достигли ли мы Иннополис (город n) в заданное время
-    return distance[n-1] <= time_limit
+        for next_city, (limit, t) in enumerate(zip(weights[city], time_limits[city])):
+            if limit >= cups * 100 + 3000000:  # Учет веса кружек и грузовика
+                if time + t <= 1440:  # Не более 24 часов
+                    heappush(queue, (time + t, next_city, cups))
 
+    return 0
 
-def binary_search(n, m, roads):
-    left, right = 0, 30000  # начинаем двоичный поиск от 0 кружек до максимально возможного
-    while left < right:
-        mid = (left + right + 1) // 2
-        weight = 3000 + mid * 0.1 # текущий вес грузовика в кг с кружками
-        if can_deliver(weight, n, roads):
-            left = mid
-        else:
-            right = mid - 1
-    return left
+def main():
+    n, m = map(int, stdin.readline().split())
+    weights = [[0] * n for _ in range(n)]
+    time_limits = [[1441] * n for _ in range(n)]
 
-n, m = map(int, input().split())
-roads = []
-for _ in range(m):
-    a, b, t, w = map(int, input().split())
-    roads.append((a, b, t, w)) 
-max_cups = binary_search(n, m, roads)
-print(max_cups)
+    for _ in range(m):
+        a, b, t, w = map(int, stdin.readline().split())
+        weights[a - 1][b - 1] = w
+        weights[b - 1][a - 1] = w
+        time_limits[a - 1][b - 1] = t
+        time_limits[b - 1][a - 1] = t
+
+    stdout.write(f"{dijkstra(weights, time_limits, n)}\n")
+
+if __name__ == "__main__":
+    main()
