@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "*.sqlt": "sql",
+        "*.tex": "latex",
+        "*.brief": "brief",
+        "ios": "cpp"
+    }
+}
